@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "schembuilder",
+  "version": "${version}",
+  "name": "Schem Builder",
+  "description": "Client-side schematic printer. Loads .schem files, builds bottom-up, skips blocks that cannot be placed yet and returns to them, and places stairs/slabs/logs/etc. in the correct orientation.",
+  "authors": ["Sebastian"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.schembuilder.SchemClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

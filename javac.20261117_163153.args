@@ -1,0 +1,15 @@
+-proc:none
+-d
+/tmp/claude-0/-home-claude/5cd98730-b80a-5962-8166-6b583ccc165d/scratchpad/syn
+src/main/java/com/schembuilder/Chat.java
+src/main/java/com/schembuilder/SchemClient.java
+src/main/java/com/schembuilder/HologramRenderer.java
+src/main/java/com/schembuilder/SchemCommands.java
+src/main/java/com/schembuilder/SchemScreen.java
+src/main/java/com/schembuilder/Config.java
+src/main/java/com/schembuilder/schem/GridTransform.java
+src/main/java/com/schembuilder/schem/Nbt.java
+src/main/java/com/schembuilder/schem/LitematicReader.java
+src/main/java/com/schembuilder/schem/SchematicFile.java
+src/main/java/com/schembuilder/schem/ProgressTracker.java
+src/main/java/com/schembuilder/SchematicBuilder.java

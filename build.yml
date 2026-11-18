@@ -1,0 +1,62 @@
+name: Build mod jar
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 9.2.1
+
+      # First try the full mod, including the hologram renderer.
+      - name: Build (with hologram)
+        id: full
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle build --no-daemon 2>&1 | tee full-build.log
+
+      # If that fails to compile, build again without the hologram so you still get a working jar,
+      # and put the compiler errors on the run summary page so they can be sent over to be fixed.
+      - name: Build (fallback, no hologram)
+        if: steps.full.outcome == 'failure'
+        shell: bash
+        run: |
+          {
+            echo "## Built WITHOUT the hologram"
+            echo "The full build failed to compile. Copy the errors below and send them to Claude:"
+            echo '```'
+            grep -E "error:|error\[|^\s+\^|symbol:|location:" full-build.log | head -60 || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          gradle build --no-daemon -PnoHologram
+
+      - name: Say which jar this is
+        if: always()
+        shell: bash
+        run: |
+          if [ "${{ steps.full.outcome }}" = "success" ]; then
+            echo "## Built the FULL mod (hologram included)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: schem-builder-jar
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
